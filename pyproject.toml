@@ -1,0 +1,96 @@
+[tool.poetry]
+name = "comfylab"
+version = "0.1.0"
+description = "Lab-quality environment for running ComfyUI with WAN2.1, using NVIDIA driver 550 and CUDA 12.4"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+license = "MIT"
+
+# --------- Environment Information ---------
+# Python environment: 3.12.3
+# This configuration uses dependency groups to avoid conflicts
+# - Base dependencies are installed by default
+# - Other groups can be excluded with --without flags
+# Example: poetry install --without comfyui_deps,wan_deps,manager_deps,dev -v
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"  # Compatible with Python 3.12.3
+
+# ----- Core PyTorch Dependencies (must be installed first) -----
+# These CUDA-specific packages must be installed before others to avoid reinstallation
+torch = { version = "2.4.0+cu124", source = "pytorch" }  # CRITICAL: Installed first with CUDA 12.4
+torchvision = { version = "0.19.0+cu124", source = "pytorch" }  # Must be installed with matching CUDA version
+torchaudio = { version = "2.4.0+cu124", source = "pytorch" }  # Complete the PyTorch ecosystem
+torchsde = "*"  # Required by ComfyUI
+
+# ----- Foundation Libraries (install early in dependency resolution) -----
+numpy = ">=1.25.0,<2"  # Constrained by both ComfyUI (>=1.25.0) and WAN2.1 (<2)
+einops = ">=0.7.0"  # Required by multiple components including TeaCache
+safetensors = ">=0.4.2"  # Critical for model loading
+
+[tool.poetry.group.comfyui_deps.dependencies]
+# ----- Dependencies that will be installed manually later -----
+transformers = ">=4.49.0"  # Highest version from WAN2.1
+tokenizers = ">=0.20.3"  # Highest version from WAN2.1
+flash-attn = "2.7.4.post1"  # Should be installed with --no-build-isolation
+diffusers = ">=0.32.0"  # Highest version from WanVideoWrapper
+accelerate = ">=1.2.1"  # For hardware acceleration
+sentencepiece = "*"
+aiohttp = ">=3.11.8"
+yarl = ">=1.18.0"
+pyyaml = "*"
+Pillow = "*"
+scipy = "*"
+tqdm = "*"
+psutil = "*"
+kornia = ">=0.7.1"  # For image processing
+spandrel = "*"
+soundfile = "*"
+av = "*"
+
+[tool.poetry.group.wan_deps.dependencies]
+# ----- WAN2.1 Specific Dependencies -----
+opencv-python = ">=4.9.0.80"
+imageio = "*"
+easydict = "*"
+ftfy = "*"
+dashscope = "*"
+imageio-ffmpeg = "*"
+gradio = ">=5.0.0"
+
+[tool.poetry.group.manager_deps.dependencies]
+# ----- ComfyUI-Manager Dependencies -----
+GitPython = "*"
+PyGithub = "*"
+# matrix-client = "0.4.0"  # Removed due to conflict with gradio
+huggingface-hub = ">0.20"
+typer = "*"
+rich = "*"
+typing-extensions = "*"
+toml = "*"
+uv = "*"
+chardet = "*"
+protobuf = "*"  # Required by WanVideoWrapper
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "*"
+flake8 = "*"
+isort = "*"
+mypy = "*"
+
+# ----- Git repositories (Only core frameworks) -----
+# Both ComfyUI and WAN2.1 should be installed manually via git clone following
+# the instructions in comfylab-instructions.md. Poetry will only install the 
+# required dependencies, but not the frameworks themselves.
+
+# ----- Package Sources -----
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu124"
+priority = "explicit"
+
+[[tool.poetry.source]]
+name = "pypi-org"
+url = "https://pypi.org/simple"
+priority = "primary"
