@@ -1,3 +1,9 @@
 # ComfyLab
 
 ComfyLab is a specialized environment for running ComfyUI with WAN2.1 integration using Poetry. See the instructions file for detailed setup steps.
+
+I started to build this as I was exploring multiple linux distros and a few times reinstalling comfyui and I tried it with a docker, venv and settled on a poetry environment since it controls the environemntal dependancies. As a beginner I didn't realize you shouldn't install ML packages on your "host stystem," which just means your compuer with out an isolated environment. So any experienced folks out there can imageing how hard it was to use my system and use comfyui, hence my journey that ended with this repo.
+
+The instructions are desigend to walk, even a beginner to terminal,  through installing comfyui with linux (IDK if this will work in windos or mac), wan2.1, flash attention (for speedier inference), and other custom nodes within a poetry environment I've found works best with my RTX 3090, see the pyproject.toml for the latest version locking this uses. 
+
+Pull up the instructions with a terminal that lets you pull up a guide. Warp Terminal will let you click on the commands to enter them into your terminal, and the ai could help you if you get stuck. Or if you prefer to work by yourself just open terminal side by side with a good text editory and use copy paste. (If you are new to terminal keep in mind that ctrl C is cancel across operating systems even macos, but if you reprogram your keyboard to be like a mac for linux then your command c for copy becomes ctrl c on linux and cancel or quit or stop process in terminal. In terminal copy is typically ctrl-shift c and paste is ctrl-shift v. On mac it's command c and command v, but ctrl c is still cancel/quit. I explain this because I want to start a moveme3nt for more and more creative people to get into linux and development with the aid of ai and using powerful tools like ComfyUI).
